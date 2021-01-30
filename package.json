@@ -1,0 +1,23 @@
+{
+  "name": "02-homework",
+  "version": "1.0.0",
+  "description": "10 Homework",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lachlan Cameron",
+  "license": "MIT",
+  "dependencies": {
+  "inquirer": "^7.3.3",
+  "jest": "^26.6.3"
+  },
+      "scripts": {
+    "test": "jest"
+    }
+}
+
