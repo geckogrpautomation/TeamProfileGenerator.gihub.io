@@ -184,7 +184,7 @@ function pkgData(){
 
 
 //Build HTML from pkgLog.JSON
-buildOrgObject(){
+function buildOrgObject(){
  
 }
 //End function buildHTMl()
