@@ -149,7 +149,7 @@ function storeI(a){
 //End function storeI()
 
 
-//pkGData to to ready for HTML generation
+//pkGData. Consolidate arrays ready for bulk Org object creation
 function pkgData(){
   
   if (mangClassContainer !== []){
@@ -172,7 +172,7 @@ function pkgData(){
 
   let d = JSON.stringify(pkgClassContainer);
 
-    //Log data to files to store user data retentively.
+  //Log data to files to store user data retentively.
   fs.writeFile("./pkgLog.JSON",`${d}`, (err) => { 
     if (err) 
       throw err 
@@ -183,7 +183,7 @@ function pkgData(){
 //End function pkgData()
 
 
-//Build HTML from pkgLog.JSON
+//Build Org JSON object
 function buildOrgObject(d){
 
   console.log("Build Org Object Ran");
@@ -199,7 +199,8 @@ function buildOrgObject(d){
     });    
   
   });
-
+  //Render Org chart objects
+  renderOrgChart();
 }
 //End function buildOrgObject()
 
@@ -228,6 +229,32 @@ function slctOrgString(){
 }
 //End function slctOrgString()
 
+
+function renderOrgChart(){
+
+      google.charts.load('current', {packages:["orgchart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('string', 'Manager');
+        data.addColumn('string', 'ToolTip');
+
+        // For each orgchart box, provide the name, manager, and tooltip to show.
+        data.addRows([orgChart]);
+
+        // Create the chart.
+        var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+        // Draw the chart, setting the allowHtml option to true for the tooltips.
+        chart.draw(data, {'allowHtml':true});
+
+      }
+
+}
+//End function renderOrgChart()
+      
 
 
 //Call Inquirer for the first time when called from the command line.
