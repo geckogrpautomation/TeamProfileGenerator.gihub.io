@@ -9,6 +9,7 @@ var mangClassContainer = [];
 var engClassContainer = [];
 var intClassContainer = [];
 var pkgClassContainer = [];
+var orgChart = [];
 
 //Count how many time inquirer has run
 let inqCount = 0;
@@ -21,6 +22,7 @@ const manQuestions = [
   {name: "name", type: "input", message:"What is your name?"},
   {name: "id", type: "number", message:"What is your employee ID?(number)"},
   {name: "email", type: "input", message:"What is your email address?"},
+  {name: "reportTo", type: "input", message:"Whom does this staff member report to?"},
   {name: "offNum", type: "number", message:"What is your office number?(number)"},
   {name: "add", type: "rawlist", message:"Do you want to add another staff member?", choices: inqChoices, default:"Exit"}
 ];
@@ -29,8 +31,8 @@ const engQuestions = [
   {name: "name", type: "input", message:"What is your name?", },
   {name: "id", type: "number", message:"What is your employee ID?(number)"},
   {name: "email", type: "input", message:" What is your email address?"},
-  {name: "gitHub", type: "input", message:"What is your gitHub?"}, 
   {name: "reportTo", type: "input", message:"Whom does this staff member report to?"},
+  {name: "gitHub", type: "input", message:"What is your gitHub?"},  
   {name: "add", type: "rawlist", message:"Do you want to add another staff member?", choices: inqChoices ,default:"Exit"},     
 ];
 
@@ -40,6 +42,7 @@ const internQuestions = [
   {name: "id", type: "number", message:"What is your employee ID?(number)"},
   {name: "email", type: "input", message:" What is your email address?"},
   {name: "reportTo", type: "input", message:"Whom does this staff member report to?"},
+  {name: "school", type: "input", message:"What school did you attend?"}, 
   {name: "add", type: "rawlist", message:"Do you want to add another staff member?", choices: inqChoices ,default:"Exit"},    
 ];
 
@@ -78,18 +81,18 @@ function inqAns(a){
   }
 
   if (a.school !== undefined){
-
+    
     storeI(a);
 
   }
   
   //Re-run Inquirer if the suer has selected to add an engineer or Intern
-  if (a.add === "Engineer"){
+  if (a.add == "Engineer"){
 
     runInquirer(engQuestions);
   }
 
-  if (a.add === "Intern"){
+  if (a.add == "Intern"){
 
     runInquirer(internQuestions);
   }
@@ -101,15 +104,14 @@ function inqAns(a){
 //Store Manager data
 function storeM(a){
   
-  let tempClass = new obj.Manager(a.name,a.id,a.email,a.offNum,"Manager");  
+  let tempClass = new obj.Manager(a.name,a.id,a.email,a.reportTo,a.offNum,"Manager");  
 
-  mangClassContainer.push([tempClass]); 
+  mangClassContainer.push(tempClass); 
   
-  log(mangClassContainer)
 
-  if (a.add === "Exit"){
+  if (a.add == "Exit"){
 
-    pkgData()
+    pkgData();
 
   }
 }
@@ -119,15 +121,13 @@ function storeM(a){
 //Store Engineer data
 function storeE(a){
  
-  let tempClass = new obj.Engineer(a.name,a.id,a.email,a.offNum,"Engineer");
+  let tempClass = new obj.Engineer(a.name,a.id,a.email,a.reportTo,a.gitHub,"Engineer");
 
-  engClassContainer.push([tempClass]); 
+  engClassContainer.push(tempClass); 
 
-  log(engClassContainer) 
+  if (a.add == "Exit"){
 
-  if (a.add === "Exit"){
-
-    pkgData()
+    pkgData();
 
   }
 }
@@ -137,60 +137,100 @@ function storeE(a){
 //Store Intern data
 function storeI(a){
 
-  let tempClass = new obj.Intern(a.name,a.id,a.email,a.offNum,"Intern");
+  let tempClass = new obj.Intern(a.name,a.id,a.email,a.reportTo,a.school,"Intern");
 
-  intClassContainer.push([tempClass]); 
+  intClassContainer.push(tempClass); 
 
-  log(intClassContainer) 
+  if (a.add == "Exit"){
 
-  if (a.add === "Exit"){
-    pkgData()
+    pkgData();
   }
 }
 //End function storeI()
 
 
-//Log to JSON file in class structure with class data
-function log(d){
-
-dp = JSON.stringify (d);
-
-  fs.appendFile("./errLog.JSON",`\n${dp}`, (err) => { 
-    if (err) 
-      throw err 
-  }); 
-
-}
-
-
 //pkGData to to ready for HTML generation
 function pkgData(){
   
-  pkgClassContainer.push([mangClassContainer]); 
+  if (mangClassContainer !== []){
 
-  pkgClassContainer.push([engClassContainer]); 
+    pkgClassContainer.push(mangClassContainer);
+   
+  }
+   
+  if (engClassContainer !== []){
 
-  pkgClassContainer.push([intClassContainer]); 
-  
-  let d = JSON.stringify (pkgClassContainer);
+    pkgClassContainer.push(engClassContainer); 
 
-  //Log data to files to store user data retentively.
-  fs.appendFile("./pkgLog.JSON",`\n${d}`, (err) => { 
+  }
+
+  if (intClassContainer !== []){
+
+    pkgClassContainer.push(intClassContainer); 
+
+  }
+
+  let d = JSON.stringify(pkgClassContainer);
+
+    //Log data to files to store user data retentively.
+  fs.writeFile("./pkgLog.JSON",`${d}`, (err) => { 
     if (err) 
       throw err 
   });
+  buildOrgObject(d);
+    
 }
 //End function pkgData()
 
 
 //Build HTML from pkgLog.JSON
-function buildOrgObject(){
+function buildOrgObject(d){
+
+  console.log("Build Org Object Ran");
+
+  let dp = JSON.parse(d);
+  
+  dp.forEach(element => {  
+
+    orgChart.push( () => { 
+    
+      slctOrgString(dp);
+      
+    });    
+  
+  });
+
+}
+//End function buildOrgObject()
+
+
+
+function slctOrgString(){
+
+  if (dp.className === "Manager") {
+
+   return `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.offNum}">Phone</a></div>'},'', 'Manager']`;
+
+  }   
+  
+  if (dp.className === "Engineer") {
+
+    `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.gitHub}">GitHub</a></div>'},'', 'Engineer']`;
+
+  }   
+
+  if (dp.className === "Intern") {
+
+    `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.school}">School</a></div>'},'', 'Intern']`;
+
+  }   
  
 }
-//End function buildHTMl()
+//End function slctOrgString()
 
 
-//Call Inquirer for the first time when called from the commadn line.
+
+//Call Inquirer for the first time when called from the command line.
 runInquirer(manQuestions);
 
 
