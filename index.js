@@ -1,3 +1,4 @@
+
 const inquirer = require("inquirer");
 const fs = require("fs");
 const jest = require("jest");
@@ -9,7 +10,10 @@ var mangClassContainer = [];
 var engClassContainer = [];
 var intClassContainer = [];
 var pkgClassContainer = [];
-var orgChart = [];
+var orgChartAdd = [];
+var orgChartExist = [];
+
+console.log("intClassContainer length " + intClassContainer.length);
 
 //Count how many time inquirer has run
 let inqCount = 0;
@@ -152,19 +156,20 @@ function storeI(a){
 //pkGData. Consolidate arrays ready for bulk Org object creation
 function pkgData(){
   
-  if (mangClassContainer !== []){
+  if (mangClassContainer.length > 0){
 
     pkgClassContainer.push(mangClassContainer);
    
   }
    
-  if (engClassContainer !== []){
+  if (engClassContainer.length > 0){
 
     pkgClassContainer.push(engClassContainer); 
 
   }
 
-  if (intClassContainer !== []){
+  if (intClassContainer.length > 0){
+    console.log("empty intClass  -  " + intClassContainer);
 
     pkgClassContainer.push(intClassContainer); 
 
@@ -172,90 +177,93 @@ function pkgData(){
 
   let d = JSON.stringify(pkgClassContainer);
 
-  //Log data to files to store user data retentively.
-  fs.writeFile("./pkgLog.JSON",`${d}`, (err) => { 
+  
+  fs.appendFile("./pkgLog.JSON",`${d}`, (err) => {  //Log data to files to store user data retentively.
     if (err) 
       throw err 
   });
   buildOrgObject(d);
     
-}
-//End function pkgData()
+} //End function pkgData()
+
 
 
 //Build Org JSON object
 function buildOrgObject(d){
 
-  console.log("Build Org Object Ran");
-
   let dp = JSON.parse(d);
+  let x = [];
+  let y = [];
   
-  dp.forEach(element => {  
+  dp.forEach(e1 => {  
 
-    orgChart.push( () => { 
+    console.log("buildOrgObject inside dp.foreach " + JSON.stringify(e1))
     
-      slctOrgString(dp);
-      
-    });    
+    x = slctOrgString(e1);
+
+    orgChartAdd.push(x);
   
-  });
-  //Render Org chart objects
-  renderOrgChart();
-}
-//End function buildOrgObject()
+  });  //Render Org chart objects
+
+
+fs.readFile("./orgChart.JSON", (err, data) => { //Read back existing Org chart store.
+
+  if (err){ //If file isnt in the directory write only the contents added in the cmd session    
+    fs.writeFile("./orgChart.JSON",JSON.stringify(orgChartAdd), (err) => { 
+      if (err) 
+        throw err 
+    });
+  } 
+     
+  else { //If file is in the directory add existing file data and new cmd session data together and write to directory
+    orgChartExist = JSON.parse(data); //Add to existing Org chart array. 
+
+    orgChartAdd.forEach(e2 => {    
+      orgChartExist.push(e2);   
+    }); 
+
+   
+  fs.unlink("./orgChart.JSON", (err => {  //Delete file and write back Org chart data
+    if (err) { 
+      console.log(err); 
+    }    
+    else{ //If no delete file error then write the file back with add and existing datae      
+      fs.writeFile("./orgChart.JSON",JSON.stringify(orgChartExist), (err) => {  //Start write file
+        if (err)
+          throw err 
+      }); //End write file
+    } //End else 
+  })); //End file delete and write
+  } //End else  
+  }); //End Read back existing Org chart store.  
+}//End function buildOrgObject()
 
 
 
-function slctOrgString(){
+function slctOrgString(e){
+  
 
-  if (dp.className === "Manager") {
+  if (e[0].className === "Manager") {
 
-   return `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.offNum}">Phone</a></div>'},'', 'Manager']`;
+   return [{'v': `${e[0].fullName}`, 'f': `<div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${e[0].fullName}'<br>${e[0].className}<br>${e[0].id}<br><a href="mailto:${e[0].email}">Email</a><br><a href="tel:${e[0].offNum}">Phone</a></div>`},`${e[0].reportTo}`, 'Manager'];
 
   }   
   
-  if (dp.className === "Engineer") {
+  if (e[0].className === "Engineer") {
 
-    `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.gitHub}">GitHub</a></div>'},'', 'Engineer']`;
+    return [{'v': `${e[0].fullName}`, 'f': `<div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${e[0].fullName}<br>${e[0].className}<br>${e[0].id}<br><a href="mailto:${e[0].email}">Email</a><br><a href="tel:${e[0].gitHub}">GitHub</a></div>`},`${e[0].reportTo}`, 'Engineer'];
 
   }   
 
-  if (dp.className === "Intern") {
+  if (e[0].className === "Intern") {
 
-    `[{'v': ${dp.name}, 'f': <div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${dp.name}<br>${dp.className}<br>${dp.id}<br><a href="mailto:${dp.email}">Email</a><br><a href="tel:${a.school}">School</a></div>'},'', 'Intern']`;
+    return [{'v': `${e[0].fullName}`, 'f': `<div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${e[0].fullName}<br>${e[0].className}<br>${e[0].id}<br><a href="mailto:${e[0].email}">Email</a><br><a href="tel:${e[0].school}">School</a></div>'`},`${e[0].reportTo}`, 'Intern'];
 
   }   
  
 }
 //End function slctOrgString()
-
-
-function renderOrgChart(){
-
-      google.charts.load('current', {packages:["orgchart"]});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Name');
-        data.addColumn('string', 'Manager');
-        data.addColumn('string', 'ToolTip');
-
-        // For each orgchart box, provide the name, manager, and tooltip to show.
-        data.addRows([orgChart]);
-
-        // Create the chart.
-        var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
-        // Draw the chart, setting the allowHtml option to true for the tooltips.
-        chart.draw(data, {'allowHtml':true});
-
-      }
-
-}
-//End function renderOrgChart()
-      
-
+     
 
 //Call Inquirer for the first time when called from the command line.
 runInquirer(manQuestions);
