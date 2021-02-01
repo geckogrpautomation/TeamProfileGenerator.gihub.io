@@ -13,13 +13,13 @@ class Employee{
     
     }
 
-    getName(){
+    get_Name(){
 
         return this.fullName; 
            
     }
 
-    getID(){ 
+    get_ID(){ 
 
         return this.id;
     }
@@ -30,13 +30,7 @@ class Employee{
         return this.email;
             
     }
-
-    get_Role(){
-
-        return this.className; 
-
-    }
-
+    
     get_LineMang(){
 
         return this.reportTo;

@@ -1,9 +1,7 @@
-
 const inquirer = require("inquirer");
 const fs = require("fs");
-const jest = require("jest");
 const obj = require("./objClass");
-const { Console } = require("console");
+
 
 //Define class storage containers to store class data
 var mangClassContainer = [];
