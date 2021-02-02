@@ -89,7 +89,7 @@
   1. Clone the repo.
      Open Git Bash or similar into your required directory.
   
-     git clone githubclone.com
+     git clone https://github.com/geckogrpautomation/TeamProfileGenerator.gihub.io.git
      
   2. Install NPM packages
      
