@@ -139,7 +139,7 @@
   Project Link: -  https://github.com/geckogrpautomation/TeamProfileGenerator.gihub.io
 
  
-  [Issues]: https://img.shields.io/github/issues/geckogrpautomation/TeamProfileGenerator
-  [Forks]: https://img.shields.io/github/forks/geckogrpautomation/TeamProfileGenerator
-  [Stars]: https://img.shields.io/github/stars/geckogrpautomation/TeamProfileGenerator
-  [License]: https://img.shields.io/github/license/geckogrpautomation/TeamProfileGenerator
+  [Issues]: https://img.shields.io/github/issues/geckogrpautomation/TeamProfileGenerator.gihub.io
+  [Forks]: https://img.shields.io/github/forks/geckogrpautomation/TeamProfileGenerator.gihub.io
+  [Stars]: https://img.shields.io/github/stars/geckogrpautomation/TeamProfileGenerator.gihub.io
+  [License]: https://img.shields.io/github/license/geckogrpautomation/TeamProfileGenerator.gihub.io
