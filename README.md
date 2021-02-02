@@ -51,7 +51,9 @@
   
   ## About The Project.
   
-  A commanmd line interface tool that allows the user to create a professional readme in a short time.
+ A command line interface tool that allows the user to create organisational charts..
+ 
+ Utilising Node.JS, Inquirer, Jest & Google Charts.
   
   
   
@@ -134,10 +136,10 @@
   
   Github - geckogrpautomation --- Email -  lachlan.cameron@geckogrp.com.au
   
-  Project Link: -  github.com
+  Project Link: -  https://github.com/geckogrpautomation/TeamProfileGenerator.gihub.io
 
  
-  [Issues]: https://img.shields.io/github/issues/geckogrpautomation/readMeCLI
-  [Forks]: https://img.shields.io/github/forks/geckogrpautomation/readMeCLI
-  [Stars]: https://img.shields.io/github/stars/geckogrpautomation/readMeCLI
-  [License]: https://img.shields.io/github/license/geckogrpautomation/readMeCLI
+  [Issues]: https://img.shields.io/github/issues/geckogrpautomation/TeamProfileGenerator
+  [Forks]: https://img.shields.io/github/forks/geckogrpautomation/TeamProfileGenerator
+  [Stars]: https://img.shields.io/github/stars/geckogrpautomation/TeamProfileGenerator
+  [License]: https://img.shields.io/github/license/geckogrpautomation/TeamProfileGenerator
