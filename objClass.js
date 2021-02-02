@@ -2,68 +2,64 @@
 //<-------------------------------------------CLASSES------------------------------------------->
 
 //Create Employee class. Base Class
-class Employee{
+class Employee {
 
-    constructor(fName,id,email,reportTo) {
-    
+    constructor(fName, id, email, reportTo) {
         this.fullName = fName;
         this.id = id;
         this.email = email;
         this.reportTo = reportTo
-    
+
     }
 
-    get_Name(){
+    get_Name() {
 
-        return this.fullName; 
-           
+        return this.fullName;
+
     }
 
-    get_ID(){ 
+    get_ID() {
 
         return this.id;
     }
 
 
-    get_Email(){
+    get_Email() {
 
         return this.email;
-            
+
     }
-    
-    get_LineMang(){
+
+    get_LineMang() {
 
         return this.reportTo;
 
     }
-    
+
 }
 
-  
- 
+
+
 //Extend employee class to manager via the below. Extended class of Employee
 class Manager extends Employee {
-    constructor(fName,id,email,reportTo,offPhone,className){
-    super(fName,id,email,reportTo);
-    this.officePhone = offPhone;
-    this.className = className;  
-    
+    constructor(fName, id, email, reportTo, offPhone, className) {
+        super(fName, id, email, reportTo);
+        this.officePhone = offPhone;
+        this.className = className;
     }
 }
 
 
 //Extend employee class to engineer via the below:
-class Engineer extends Employee{
+class Engineer extends Employee {
 
-    constructor(fName,id,email,reportTo,gitHub,className) {
-    
-        super(fName,id,email,reportTo);
+    constructor(fName, id, email, reportTo, gitHub, className) {
+        super(fName, id, email, reportTo);
         this.gitHub = gitHub;
-        this.className = className;  
-         
+        this.className = className;
     }
 
-    getGithub(){
+    getGithub() {
 
         return this.gitHub;
 
@@ -72,17 +68,15 @@ class Engineer extends Employee{
 
 
 //Extend employee class to intern via the below:
-class Intern extends Employee{
-    
-    constructor(fName,id,email,reportTo,school,className){
-    
-        super(fName,id,email,reportTo); 
+class Intern extends Employee {
+
+    constructor(fName, id, email, reportTo, school, className) {
+        super(fName, id, email, reportTo);
         this.school = school;
-        this.className = className;        
-    
+        this.className = className;
     }
 
-    getSchool(){
+    getSchool() {
 
         return this.school;
 
@@ -91,10 +85,10 @@ class Intern extends Employee{
 
 
 module.exports = {
-    
-  Manager,
-  Engineer,
-  Intern     
+
+    Manager,
+    Engineer,
+    Intern
 
 }
 

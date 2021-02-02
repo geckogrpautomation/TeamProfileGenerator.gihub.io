@@ -1,6 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const obj = require("./objClass");
+const path = require('path');
+
+//Define file paths
+let pkgPath = path.join(__dirname, "/pkgLog.JSON");
+let orgPath = path.join(__dirname, "/orgChart.JSON");
 
 
 //Define class storage containers to store class data
@@ -176,7 +181,7 @@ function pkgData(){
   let d = JSON.stringify(pkgClassContainer);
 
   
-  fs.appendFile("./pkgLog.JSON",`${d}`, (err) => {  //Log data to files to store user data retentively.
+  fs.appendFile(pkgPath,`${d}`, (err) => {  //Log data to files to store user data retentively.
     if (err) 
       throw err 
   });
@@ -204,10 +209,10 @@ function buildOrgObject(d){
   });  //Render Org chart objects
 
 
-fs.readFile("./orgChart.JSON", (err, data) => { //Read back existing Org chart store.
+fs.readFile(orgPath, (err, data) => { //Read back existing Org chart store.
 
   if (err){ //If file isnt in the directory write only the contents added in the cmd session    
-    fs.writeFile("./orgChart.JSON",JSON.stringify(orgChartAdd), (err) => { 
+    fs.writeFile(orgPath,JSON.stringify(orgChartAdd), (err) => { 
       if (err) 
         throw err 
     });
@@ -221,12 +226,12 @@ fs.readFile("./orgChart.JSON", (err, data) => { //Read back existing Org chart s
     }); 
 
    
-  fs.unlink("./orgChart.JSON", (err => {  //Delete file and write back Org chart data
+  fs.unlink(orgPath, (err => {  //Delete file and write back Org chart data
     if (err) { 
       console.log(err); 
     }    
     else{ //If no delete file error then write the file back with add and existing datae      
-      fs.writeFile("./orgChart.JSON",JSON.stringify(orgChartExist), (err) => {  //Start write file
+      fs.writeFile(orgPath,JSON.stringify(orgChartExist), (err) => {  //Start write file
         if (err)
           throw err 
       }); //End write file
@@ -255,7 +260,7 @@ function slctOrgString(e){
 
   if (e[0].className === "Intern") {
 
-    return [{'v': `${e[0].fullName}`, 'f': `<div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${e[0].fullName}<br>${e[0].className}<br>${e[0].id}<br><a href="mailto:${e[0].email}">Email</a><br><a href="tel:${e[0].school}">School</a></div>'`},`${e[0].reportTo}`, 'Intern'];
+    return [{'v': `${e[0].fullName}`, 'f': `<div style="color:black; font-style:bold;width: auto; text-align: left; padding: 10px;">${e[0].fullName}<br>${e[0].className}<br>${e[0].id}<br><a href="mailto:${e[0].email}">Email</a><br>${e[0].school}</div>'`},`${e[0].reportTo}`, 'Intern'];
 
   }   
  
