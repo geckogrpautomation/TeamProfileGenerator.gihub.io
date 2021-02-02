@@ -11,7 +11,7 @@
 
   <p align="center">
     <a href="github.com">
-      <img src="./pic/readme.jpg" alt="Logo" width="240" height="240">
+      <img src="./pic/orgchart.jpg" alt="Logo" width="240" height="240">
     </a>
     <h1 align="center">Project Title - Organisation Chart CLI Generator</h1> 
     <h2 align="center">Project Description</h2>
